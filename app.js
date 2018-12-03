@@ -1,5 +1,5 @@
-import { User, Product } from '../models';
-import config from '../config/default';
+import { User, Product } from './models';
+import config from './config/default';
 
 const user = new User();
 const product = new Product();
