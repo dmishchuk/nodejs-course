@@ -6,14 +6,10 @@ const cTable = require('console.table');
 
 class Importer {
     constructor() {
-        eventEmitter.on('changed', ({ dir, filename }) => {
-            const path = dir ?  `${dir}/${filename}`:`./${filename}`;
+        eventEmitter.on('changed', (path) => {
             fs.readFile(path, 'utf8', function (err, csvStr) {
                 if ( err ) throw err;
-                csv({
-                    noheader:false,
-                    output: "json"
-                })
+                csv({ noheader: false, output: "json" })
                     .fromString(csvStr)
                     .then((data)=>{
                         const table = cTable.getTable(data);
