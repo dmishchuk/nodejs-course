@@ -1,8 +1,6 @@
 'use strict';
 const fs = require('fs');
-const events = require('events').EventEmitter;
-const eventEmitter = new events();
-
+const eventEmitter = require('./eventEmitter');
 
 class DirWatcherthat {
     constructor(dir, delay) {

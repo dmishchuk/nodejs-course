@@ -1,6 +1,5 @@
 'use strict';
-const events = require('events').EventEmitter;
-const eventEmitter = new events();
+const eventEmitter = require('./eventEmitter');
 
 class Importer {
     constructor() {
