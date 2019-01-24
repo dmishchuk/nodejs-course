@@ -10,13 +10,14 @@ program
     });
 
 program.command('*').action(() => {
+    console.log('Wrong input, please check the instruction');
     program.help();
 });
 
 program.parse(process.argv);
 
 if(process.argv.length == 2) {
-    console.log('Wrong input');
+    console.log('There are no arguments for using');
     program.help();
 }
 
