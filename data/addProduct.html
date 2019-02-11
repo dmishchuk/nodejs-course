@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello!</title>
+    <style>
+        html, body {
+            height: 100%;
+            min-height: 100%;
+            background-color: powderblue;
+        }
+        form {
+            margin: 0 auto;
+            width: 50%;
+        }
+        form * {
+            line-height: 2em;
+        }
+        input[type=text] {
+            width: 100%;
+            padding: 5px 3px;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+<h1>Adding new product:</h1>
+<form action="/api/products" method="POST">
+    <input type="text" name="name" placeholder="Enter name.." required="required"><br>
+    <input type="text" name="brand" placeholder="Enter brand.." required="required"><br>
+    Price: <input type="number" name="price" required="required" value="0.00" min="0"><br>
+    <b>Extra info:</b><br>
+    Enter color: <input type="color" name="options[color]"><br>
+    Enter size:
+    <select name="options[size]">
+        <option value="">Please select size</option>
+        <option value="S">S</option>
+        <option value="M">M</option>
+        <option value="L">L</option>
+        <option value="XL">XL</option>
+        <option value="XXL">XXL</option>
+    </select>
+    <br><br>
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>
