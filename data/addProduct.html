@@ -47,5 +47,49 @@
     <br><br>
     <button type="submit">Submit</button>
 </form>
+<div>
+    <img width="50" height="50" id="fbIcon"
+         src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Facebook_logo_%28square%29.png/600px-Facebook_logo_%28square%29.png"/>
+</div>
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v3.2&appId=886573355019396&autoLogAppEvents=1"></script>
+
+<div class="fb-login-button" data-width="50" data-size="medium" data-button-type="login_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '886573355019396',
+            cookie     : true,
+            xfbml      : true,
+            version    : '{api-version}'
+        });
+
+        FB.AppEvents.logPageView();
+
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<script type="text/javascript">
+    var fbIcon = document.getElementById('fbIcon');
+    console.log(fbIcon);
+    fbIcon.onclick = function() {
+        console.log(this);
+        const Http = new XMLHttpRequest();
+        const url='/auth/facebook';
+        Http.open("GET", url);
+        Http.send();
+        Http.onreadystatechange = (e)=>{
+            console.log(Http.responseText);
+        }
+    }
+</script>
 </body>
 </html>

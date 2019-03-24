@@ -1,16 +1,41 @@
 const express = require('express');
+const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const bodyParser = require('body-parser');
+const port = process.env.PORT || 8080;
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+
+const config = require('./config');
+
 const app = express();
 app.use(cookieParser());
-const port = process.env.PORT || 8080;
 
 app.use(bodyParser.urlencoded({
-    extended: true
+    extended: false
 }));
 
+require('./auth').init(app);
+
+app.use(session({
+    store: new RedisStore({
+        url: config.redisStore.url
+    }),
+    secret: config.redisStore.secret,
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(bodyParser.json());
+
+app.all('/*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    next();
+});
 
 app.get('/', function (req, res) {
     res.send(fs.readFileSync('./data/addProduct.html', 'utf8'));
@@ -49,5 +74,14 @@ app.get('/', function (req, res) {
     fs.writeFileSync('./data/data.json', JSON.stringify(products));
     res.send(JSON.stringify(newProduct));
 });
+
+app.get('/auth/facebook',
+    passport.authenticate('facebook'));
+
+app.get('/auth/facebook/callback',
+    passport.authenticate('facebook', { failureRedirect: '/login' }),
+    function(req, res) {
+        res.redirect('/');
+    });
 
 app.listen(port, () => console.log(`App listening on port ​${port}​!`));
