@@ -1,4 +1,4 @@
-import { User, Product } from './models';
+import { User, Product } from './models_prev';
 import { DirWatcher, Importer } from './modules';
 import config from './config/default';
 
