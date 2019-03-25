@@ -3,7 +3,7 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const bodyParser = require('body-parser');
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 
@@ -89,6 +89,15 @@ app.get('/auth/twitter',
 
 app.get('/auth/twitter/callback',
     passport.authenticate('twitter', { failureRedirect: '/login' }),
+    function(req, res) {
+        res.redirect('/');
+    });
+
+app.get('/auth/google',
+    passport.authenticate('google'));
+
+app.get('/auth/google/callback',
+    passport.authenticate('google', { scope: ['profile'] }),
     function(req, res) {
         res.redirect('/');
     });

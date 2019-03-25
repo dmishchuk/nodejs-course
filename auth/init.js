@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 // Generate Password
 const saltRounds = 10;
@@ -58,29 +59,41 @@ function initPassport () {
             })
         }
     ));
-}
 
-passport.use(new FacebookStrategy({
-    'clientID'      : '886573355019396',
-    'clientSecret'  : '21accbb66f6f6659caf745f56a9e2fcd',
-    'callbackURL'   : 'http://localhost:8080/auth/facebook/callback'
-}, (req, token, refreshToken, profile, done) => {
-    process.nextTick(() => {
-        if (!req.user) console.log(profile);
-        return done(null, profile);
-    });
-}));
-
-passport.use(new TwitterStrategy({
-        consumerKey: 'BvZEbpEeh4YgMjeOsFLubiayr',
-        consumerSecret: 'CrYv0YldTCOY38bxoUMTu1f1WTC1VykXuuPjX7bSawYREA5ChI',
-        callbackURL: "http://127.0.0.1:8080/auth/twitter/callback"
-    },
-    function(token, tokenSecret, profile, cb) {
-        User.findOrCreate({ twitterId: 8481655 }, function (err, user) {
-            return cb(err, user);
+    passport.use(new FacebookStrategy({
+        'clientID'      : '886573355019396',
+        'clientSecret'  : '21accbb66f6f6659caf745f56a9e2fcd',
+        'callbackURL'   : 'http://localhost:3000/auth/facebook/callback'
+    }, (req, token, refreshToken, profile, done) => {
+        process.nextTick(() => {
+            if (!req.user) console.log(profile);
+            return done(null, profile);
         });
-    }
-));
+    }));
+
+    passport.use(new TwitterStrategy({
+            consumerKey: 'BvZEbpEeh4YgMjeOsFLubiayr',
+            consumerSecret: 'CrYv0YldTCOY38bxoUMTu1f1WTC1VykXuuPjX7bSawYREA5ChI',
+            callbackURL: "http://127.0.0.1:3000/auth/twitter/callback"
+        },
+        function(token, tokenSecret, profile, cb) {
+            User.findOrCreate({ twitterId: 8481655 }, function (err, user) {
+                return cb(err, user);
+            });
+        }
+    ));
+
+    passport.use(new GoogleStrategy({
+            clientID: '661747917614-capj744oddi8urb6vdbm90chv6ln5889.apps.googleusercontent.com',
+            clientSecret: 'JLeKnjcY5epLjqG1KTPnQBS5',
+            callbackURL: 'http://127.0.0.1:3000/auth/google/callback'
+        },
+        (token, refreshToken, profile, done) => {
+            return done(null, {
+                profile: profile,
+                token: token
+            });
+        }));
+}
 
 module.exports = initPassport;
