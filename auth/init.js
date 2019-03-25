@@ -2,6 +2,7 @@ const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
+const TwitterStrategy = require('passport-twitter').Strategy;
 
 // Generate Password
 const saltRounds = 10;
@@ -69,5 +70,17 @@ passport.use(new FacebookStrategy({
         return done(null, profile);
     });
 }));
+
+passport.use(new TwitterStrategy({
+        consumerKey: 'BvZEbpEeh4YgMjeOsFLubiayr',
+        consumerSecret: 'CrYv0YldTCOY38bxoUMTu1f1WTC1VykXuuPjX7bSawYREA5ChI',
+        callbackURL: "http://127.0.0.1:8080/auth/twitter/callback"
+    },
+    function(token, tokenSecret, profile, cb) {
+        User.findOrCreate({ twitterId: 8481655 }, function (err, user) {
+            return cb(err, user);
+        });
+    }
+));
 
 module.exports = initPassport;

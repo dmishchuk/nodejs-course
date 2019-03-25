@@ -48,8 +48,11 @@
     <button type="submit">Submit</button>
 </form>
 <div>
-    <img width="50" height="50" id="fbIcon"
+    <img width="25" height="25" id="fbIcon"
          src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Facebook_logo_%28square%29.png/600px-Facebook_logo_%28square%29.png"/>
+
+    <img width="25" height="25" id="twIcon"
+         src="https://upload.wikimedia.org/wikipedia/ru/thumb/9/9f/Twitter_bird_logo_2012.svg/1200px-Twitter_bird_logo_2012.svg.png"/>
 </div>
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v3.2&appId=886573355019396&autoLogAppEvents=1"></script>
@@ -79,7 +82,6 @@
 
 <script type="text/javascript">
     var fbIcon = document.getElementById('fbIcon');
-    console.log(fbIcon);
     fbIcon.onclick = function() {
         console.log(this);
         const Http = new XMLHttpRequest();
@@ -89,7 +91,19 @@
         Http.onreadystatechange = (e)=>{
             console.log(Http.responseText);
         }
-    }
+    };
+
+    var twIcon = document.getElementById('twIcon');
+    twIcon.onclick = function() {
+        console.log(this);
+        const Http = new XMLHttpRequest();
+        const url='/auth/twitter';
+        Http.open("GET", url);
+        Http.send();
+        Http.onreadystatechange = (e)=>{
+            console.log(Http.responseText);
+        }
+    };
 </script>
 </body>
 </html>
