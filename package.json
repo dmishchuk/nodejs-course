@@ -36,6 +36,7 @@
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.4",
+    "mongodb": "^3.2.3",
     "mysql2": "^1.6.5",
     "passport-twitter": "^1.0.4",
     "pg-hstore": "^2.3.2",
