@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const port = process.env.PORT || 3000;
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const config = require('./config');
 
@@ -17,6 +19,49 @@ app.use(bodyParser.urlencoded({
 }));
 
 require('./auth').init(app);
+
+const userScheme = new Schema({
+    firstName: String,
+    lastName: String,
+    email: String
+});
+
+const productScheme = new Schema({
+    name: String,
+    model: String,
+    price: Number
+});
+mongoose.connect("mongodb://localhost:27017/usersdb", { useNewUrlParser: true });
+  
+const User = mongoose.model("User", userScheme);
+const user = new User({
+    firstName: "Dmytro",
+    lastName: "Mishchuk",
+    email: "dmishchuk@gmail.com"
+});
+  
+user.save(function(err){
+    mongoose.disconnect();  // отключение от базы данных
+      
+    if(err) return console.log(err);
+    console.log("User created: ", user);
+});
+
+mongoose.connect("mongodb://localhost:27017/productsdb", { useNewUrlParser: true });
+  
+const Product = mongoose.model("Product", productScheme);
+const product = new Product({
+    name: "book",
+    model: "A4 Jane Air",
+    price: 32
+});
+  
+product.save(function(err){
+    mongoose.disconnect();  // отключение от базы данных
+      
+    if(err) return console.log(err);
+    console.log("Product created: ", product);
+});
 
 app.use(session({
     store: new RedisStore({
