@@ -73,6 +73,33 @@ app.get('/', function (req, res) {
     products.push(newProduct);
     fs.writeFileSync('./data/data.json', JSON.stringify(products));
     res.send(JSON.stringify(newProduct));
+}).get('/city', (req, res) => {
+    var MongoClient = require('mongodb').MongoClient;
+    var url = "mongodb://localhost:27017/";
+    var data = [];
+    MongoClient.connect(url, function(err, db) {
+      if (err) throw err;
+      var dbo = db.db("dmishchuk_db");
+      dbo.collection("cities").find({}).toArray(function(err, result) {
+        if (err) throw err;
+        var city = result[Math.floor((Math.random()*result.length))];
+        res.send(city);
+        db.close();
+      });
+    });
+}).get('/cities', (req, res) => {
+    var MongoClient = require('mongodb').MongoClient;
+    var url = "mongodb://localhost:27017/";
+    var data = [];
+    MongoClient.connect(url, function(err, db) {
+      if (err) throw err;
+      var dbo = db.db("dmishchuk_db");
+      dbo.collection("cities").find({}).toArray(function(err, result) {
+        if (err) throw err;
+        res.send(JSON.stringify(result));
+        db.close();
+      });
+    });
 });
 
 app.get('/auth/facebook',

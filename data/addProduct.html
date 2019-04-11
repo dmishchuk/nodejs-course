@@ -61,6 +61,12 @@
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ru_RU/sdk.js#xfbml=1&version=v3.2&appId=886573355019396&autoLogAppEvents=1"></script>
 
 <div class="fb-login-button" data-width="50" data-size="medium" data-button-type="login_with" data-auto-logout-link="false" data-use-continue-as="false"></div>
+<br>
+<div>
+    <button onclick="getCities()">Get cities</button>
+    <button onclick="getRandomCity()">Get random city</button>
+</div>
+<div id="cities-block"></div>
 <script>
     window.fbAsyncInit = function() {
         FB.init({
@@ -119,6 +125,40 @@
             console.log(Http.responseText);
         }
     };
+</script>
+<script type="text/javascript">
+    function getRandomCity () {
+        const Http = new XMLHttpRequest();
+        const url='/city';
+        Http.open("GET", url);
+        Http.send();
+        Http.onreadystatechange = (e)=>{
+            var city = JSON.parse(Http.responseText);
+            var htmlStr = '<h2>Random city:</h2><table border="1" cellpadding="3"><thead><tr><th>Name</th><th>Country</th><th>Capital</th><th>Location</th></tr></thead><tbody>';
+            htmlStr += '<tr><td>' + city.name + '</td><td>' + city.country + '</td><td>' + city.country + '</td><td>lat: ' + city.location.lat + ', long:  ' + city.location.long + '</td></tr>';
+            htmlStr += '</tbody></table>'
+            console.log(htmlStr);
+            var output = document.getElementById('cities-block');
+            output.innerHTML = htmlStr;
+        }
+    }
+    function getCities () {
+        const Http = new XMLHttpRequest();
+        const url='/cities';
+        Http.open("GET", url);
+        Http.send();
+        Http.onreadystatechange = (e)=>{
+            var data = JSON.parse(Http.responseText);
+            var htmlStr = '<h2>Cities:</h2><table border="1" cellpadding="3"><thead><tr><th>Name</th><th>Country</th><th>Capital</th><th>Location</th></tr></thead><tbody>';
+            for(var city of data) {
+                htmlStr += '<tr><td>' + city.name + '</td><td>' + city.country + '</td><td>' + city.country + '</td><td>lat: ' + city.location.lat + ', long:  ' + city.location.long + '</td></tr>'
+            }
+            htmlStr += '</tbody></table>'
+            console.log(htmlStr);
+            var output = document.getElementById('cities-block');
+            output.innerHTML = htmlStr;
+        }
+    }
 </script>
 </body>
 </html>
